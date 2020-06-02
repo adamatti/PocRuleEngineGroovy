@@ -18,6 +18,11 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
 
+    implementation("org.slf4j:slf4j-api:1.7.25")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("com.sparkjava:spark-kotlin:1.0.0-alpha")
+    implementation("com.sparkjava:spark-template-handlebars:2.7.1")
+
     testImplementation("junit:junit:4.13-rc-2")
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.amshove.kluent:kluent:1.40")
