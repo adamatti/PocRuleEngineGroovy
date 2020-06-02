@@ -31,4 +31,17 @@ class EngineTest {
         // Then
         result `should be equal to` "Hello Adamatti"
     }
+
+    @Test
+    fun `test rule`(){
+        // Given
+        val rule = "name == 'Adamatti' "
+        val data = """{"name":"Adamatti"}"""
+
+        // When
+        val result = Engine().processRule(rule,data)
+
+        // Then
+        result `should be equal to` "true"
+    }
 }

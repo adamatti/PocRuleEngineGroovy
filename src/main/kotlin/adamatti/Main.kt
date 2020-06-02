@@ -1,15 +1,12 @@
 @file:JvmName("Main")
 package adamatti
 
-import com.beust.klaxon.Klaxon
-import groovy.text.SimpleTemplateEngine
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import spark.ModelAndView
 import spark.kotlin.Http
 import spark.kotlin.ignite
 import spark.template.handlebars.HandlebarsTemplateEngine
-import java.lang.Exception
 
 class Main {
     companion object {
@@ -24,6 +21,7 @@ class Main {
             }
 
             registerTemplates(http)
+            registerRules(http)
 
             log.info("Started")
         }
@@ -32,7 +30,7 @@ class Main {
             http.get("/template") {
                 val model = mapOf(
                     "template" to "Hello \${name} \${lastName}",
-                    "data" to "{\"name\":\"Marcelo\",\"lastName\":\"Adamatti\"}",
+                    "data" to """{"name":"Marcelo","lastName":"Adamatti","age":"37"}""",
                     "result" to ""
                 )
                 render(model, "template.html")
@@ -52,28 +50,31 @@ class Main {
             }
         }
 
+        private fun registerRules(http: Http) {
+            http.get("/rule") {
+                val model = mapOf(
+                    "rule" to """(name=="Marcelo")""",
+                    "data" to """{"name":"Marcelo","lastName":"Adamatti","age":"37"}""",
+                    "result" to ""
+                )
+                render(model, "rule.html")
+            }
+
+            http.post("/rule") {
+                val ruleData = request.queryMap("txtRule").value()
+                val data = request.queryMap("txtData").value()
+                val result = Engine().processRule(ruleData,data)
+
+                val model = mapOf(
+                    "rule" to ruleData,
+                    "data" to data,
+                    "result" to result
+                )
+                render(model, "rule.html")
+            }
+        }
+
         private fun render(model: Any, templatePath:String) = HandlebarsTemplateEngine()
             .render(ModelAndView(model, templatePath))
-    }
-}
-
-class Engine {
-    fun processTemplate(templateData:String, jsonString:String ): String{
-        try {
-            val json = Klaxon().parse<MutableMap<*, *>>(jsonString)
-            return processTemplate(templateData, json)
-        } catch (error: Exception){
-            return error.message.toString()
-        }
-    }
-
-    fun processTemplate(templateData:String, data: MutableMap<*, *>?): String{
-        try {
-            val engine = SimpleTemplateEngine()
-            val template = engine.createTemplate(templateData).make(data)
-            return template.toString()
-        }  catch (error: Exception) {
-            return error.message.toString()
-        }
     }
 }
