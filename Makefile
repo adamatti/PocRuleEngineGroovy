@@ -1,6 +1,10 @@
 .DEFAULT_GOAL := help
 
+compile: ## compile
+	@gradle classes testClasses
 
+run: ##run
+	@gradle run
 
 .PHONY: help
 help: ## show this help
