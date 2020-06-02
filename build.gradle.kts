@@ -23,6 +23,10 @@ dependencies {
     implementation("com.sparkjava:spark-kotlin:1.0.0-alpha")
     implementation("com.sparkjava:spark-template-handlebars:2.7.1")
 
+    //implementation("com.google.code.gson:gson:2.8.5")
+    implementation("com.beust:klaxon:5.0.1")
+    implementation("org.codehaus.groovy:groovy-templates:3.0.4")
+
     testImplementation("junit:junit:4.13-rc-2")
     testImplementation("io.mockk:mockk:1.9.3")
     testImplementation("org.amshove.kluent:kluent:1.40")
